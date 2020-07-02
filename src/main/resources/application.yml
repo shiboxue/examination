@@ -11,8 +11,10 @@ es:
 mybatis:
   mapper-locations: /mybatis-mapper/*Mapper.xml
   configuration:
+    #为null处理
     call-setters-on-nulls: true
-    map-underscore-to-camel-case: false
+    #设置是否驼峰
+    map-underscore-to-camel-case: true
 
 spring:
   datasource:
@@ -20,10 +22,5 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: root
-#    tomcat:
-#      max-wait: 10000
-#      max-active: 30
-#      test-on-borrow: true
-#      validation-query: SELECT 1
-#      validation-interval: 30000
+
 

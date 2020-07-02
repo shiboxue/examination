@@ -25,4 +25,11 @@ public class SearchController {
         List<Map<String, Object>> list = searchService.executeQueryScript("select * from user");
         return msg;
     }
+
+    @RequestMapping("/test1")
+    public List<Map<String, Object>> test1(@RequestParam("msg") String msg){
+        log.info(msg);
+        List<Map<String, Object>> list = searchService.executeQueryScript("select * from dm_yyjk_gy_zxt");
+        return list;
+    }
 }
