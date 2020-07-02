@@ -1,0 +1,8 @@
+server:
+  port:
+    8488
+###Es 服务器配置
+es:
+  server:
+    ip: 10.23.10.150
+    port: 9200

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--  标准类库样式 -->
+    <link rel="stylesheet" type="text/css" href="/common/lib/bootstrap/css/bootstrap.css">
+    <!--- 插件样式---->
+    <link rel="stylesheet" type="text/css" href="/common/lib/bootstrap-select/bootstrap-select.min.css">
+    <link href="/common/lib/bootstrap-table/bootstrap-table.css" rel="stylesheet">
+    <link href="/common/plugins/edittable/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/common/plugins/edittable/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/common/plugins/edittable/css/demo.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/common/lib/bootstrap-notify/animate.min.css">
+    <!--公用样式-->
+    <link href="/common/css/common.css" rel="stylesheet">
+    <!--功能样式-->
+    <link href="./es_manager.css" rel="stylesheet">
+    <title>只用于日常学习</title>
+</head>
+<body>
+<div class="container">
+    <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+
+    <div class="col-md-12"><h3 align="center">Elastic Search 安全题库查询（只用于日常学习）</h3></div>
+   <!-- <div class="col-md-6">
+        <div class="form-group">
+            <label for="title">答题编号：</label>
+            <input type="text" id="id" class="form-control" placeholder="输入答题编号"></div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="title">认证编号：</label>
+            <input type="text" id="authorization" class="form-control" placeholder="输入认证编号"></div>
+    </div>
+    <div class="col-md-12" align="center">
+        <button type="button" class="btn btn-success btn-lg btn-block" onclick="getQuestions()">开始获取题目</button>&nbsp;&nbsp;&nbsp;
+    </div>-->
+   <!-- <div class="col-md-12">
+        <table id="questionList" class="table table-hover"></table>
+    </div>-->
+    <div class="col-md-10">
+        <div class="form-group">
+            <label for="title">查询关键字：</label>
+            <input type="text" id="title" class="form-control" placeholder="请输入索引名称..."></div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <label for="smart">联想搜索标志：</label>
+            <input type="checkbox" class="form-control" id="smart" checked>
+        </div>
+    </div>
+    <div class="col-md-12" align="center">
+        <button type="button" class="btn btn-danger btn-lg btn-block" onclick="search()">开始搜索</button>&nbsp;&nbsp;&nbsp;
+    </div>
+    <div class="col-md-12"><h3 align="center"></h3></div>
+    <div class="col-md-12">
+        <table id="tableList" class="table table-hover"></table>
+    </div>
+</div>
+</body>
+
+<!--------标准工具包JS----->
+<!--<script src="/common/lib/jquery/jquery.js"></script>
+<script src="/common/lib/bootstrap/js/bootstrap.js"></script>-->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="/common/lib/jquery/jquery.js"></script>
+<script src="/common/lib/bootstrap/js/bootstrap.js"></script>
+<!----------插件JS--------->
+<script src="/common/lib/bootstrap-select/bootstrap-select.min.js"></script>
+<script src="/common/lib/bootstrap-table/bootstrap-table.js"></script>
+<script src="/common/lib/bootstrap-table/bootstrap-table-zh-CN.js"></script>
+<script src="/common/lib/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="/common/plugins/edittable/js/bootstable.js"></script>
+<!----------公共JS--------->
+<script type="text/javascript" src="/common/js/tools.js"></script><!----------业务JS--------->
+<script type="text/javascript" src="/common/js/init.js"></script>
+<!----------业务JS--------->
+<script type="text/javascript" src="./search.js"></script>
+</body>
+</html>
