@@ -1,9 +1,11 @@
-var data = [['', '三体', '刘慈欣', '39.00', '重庆出版社', '982513213516']]
-var titles = ['书名', '作者', '价格', '出版社', 'ISBN']
+var data = [['', '三体', '刘慈欣', '39.00', '重庆出版社']]
+var titles = ['标题', '内容', '用户', '类型',]
 $(function () {
     var table = $('#books').DataTable({
         data: data,
         "pagingType": "full_numbers",
+        "processing": true,
+        "serverSide": false,
         "bSort": true,
         "language": {
             "sProcessing": "处理中...",
@@ -74,7 +76,7 @@ $(function () {
                         alert(titles[i] + '内容不能为空')
                     }
                 }
-                table.row.add(['', bookName, bookAuthor, bookPrice, bookPublish, bookISBN]).draw();
+                table.row.add(['', title, content, user, studyType]).draw();
                 $("#addBookModal").find('input').val('')
             }
         } else {
@@ -93,7 +95,7 @@ $(function () {
         if (table.rows('.selected').data().length) {
             $("#editBookInfo").modal()
             var rowData = table.rows('.selected').data()[0];
-            var inputs = $("#editBookModal").find('input')
+            var inputs = $("#editBookModal").find('.form-control')
             for (var i = 0; i < inputs.length; i++) {
                 $(inputs[i]).val(rowData[i + 1])
             }

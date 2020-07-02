@@ -1,0 +1,71 @@
+.content {
+    width: 100%;
+    margin-left: 0px;
+    padding-top: 10px;
+}
+.tab-pane{
+    margin-top: 50px;
+}
+
+.box {
+    width: 20px;
+    height: 20px;
+    padding: 2px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+.fileBtnA {
+    position: relative;
+    display: inline-block;
+    width: auto;
+    padding: 0 30px 1px 30px;
+    margin: 0px 10px;
+    height: 34px;
+    text-align: center;
+    line-height: 33px;
+    border-radius: 6px;
+    background: #fff;
+    color: #499dff;
+    border: 1px solid #499dff;
+}
+
+.fileBtnA input {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.fileBtnA:hover {
+    background: linear-gradient(to right, #FFAD4A 0, #FF9362 50%);
+    background: -webkit-linear-gradient(to right, #FFAD4A 0, #FF9362 50%);
+    color: #fff !important;
+    text-decoration: none;
+    background: #499dff;
+}
+#filenames{
+    list-style: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#filenames>li>button{
+    padding: 0 6px 1px 6px;
+    margin: 2px 6px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 6px;
+    background: #fff;
+    color: #499dff;
+    border: 1px solid #499dff;
+}
+#filenames>li>button:hover {
+    background: linear-gradient(to right, #FFAD4A 0, #FF9362 50%);
+    background: -webkit-linear-gradient(to right, #FFAD4A 0, #FF9362 50%);
+    color: #fff !important;
+    text-decoration: none;
+    background: #499dff;
+}
