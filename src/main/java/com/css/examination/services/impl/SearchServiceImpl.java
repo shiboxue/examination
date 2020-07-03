@@ -7,13 +7,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @className SearchServiceImpl
- * @Description TODO
- * @Auhtor shiboxue
- * @Date 2019/9/12 9:29
- * @Version 1.0
- **/
 @Service
 public class SearchServiceImpl implements ISearchService {
     @Autowired
@@ -22,5 +15,21 @@ public class SearchServiceImpl implements ISearchService {
     @Override
     public List<Map<String, Object>> executeQueryScript(String sql) {
         return baseDao.executeQueryScript(sql);
+    }
+
+    @Override
+    public List<Map<String, Object>> executeQuerySql(String cols, String tableName, String where, String limit) {
+        return baseDao.executeQuerySql(cols,tableName,where,limit);
+    }
+
+    @Override
+    public int executeInsertSql(String cols, String tableName, String values) {
+        return baseDao.executeInsertSql(cols,tableName,values);
+    }
+
+    @Override
+    public void executeSql(List<Map<String,String>> setList,String tableName,String where) {
+        final StringBuffer sql = new StringBuffer();
+        baseDao.executeSql(sql.toString());
     }
 }

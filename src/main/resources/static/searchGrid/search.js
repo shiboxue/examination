@@ -44,14 +44,12 @@ $('#tableList').bootstrapTable({
         return param;
 
     },
-    // responseHandler: function (res) {
-    //     TOTAL = data.total;
-    //     var rows = data.rows;
-    //     return {
-    //         "total": TOTAL,
-    //         "rows": rows
-    //     }
-    // },
+    responseHandler: function (data) {
+        return {
+            "total": data.total,
+            "rows": data.rows
+        }
+    },
     columns: [
         {
             title: '标题',
