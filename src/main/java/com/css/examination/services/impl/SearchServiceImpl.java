@@ -28,8 +28,22 @@ public class SearchServiceImpl implements ISearchService {
     }
 
     @Override
-    public void executeSql(List<Map<String,String>> setList,String tableName,String where) {
+    public int executeDeleteSql(String id, String tableName) {
+        return baseDao.deleteByExample(tableName,id);
+    }
+
+    @Override
+    public int executeUpdateSql(Map<String,Object> map,String tableName,String id) {
         final StringBuffer sql = new StringBuffer();
-        baseDao.executeSql(sql.toString());
+        for(String key:map.keySet()){//keySet获取map集合key的集合  然后在遍历key即可
+            final String value = map.get(key).toString();//
+            sql.append(",");
+            sql.append(key);
+            sql.append(" = '");
+            sql.append(value);
+            sql.append("'");
+        }
+        final String set = sql.substring(1);
+        return baseDao.updateByExample(tableName,set,id);
     }
 }

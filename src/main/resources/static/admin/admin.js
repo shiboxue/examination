@@ -1,3 +1,4 @@
+var titles = ['标题', '内容', '用户', '类型']
 $(document).ready(function () {
     var table = $("#books").DataTable({ //对表格控件进行初始化
         ordering: false,  // 关闭排序
@@ -13,7 +14,7 @@ $(document).ready(function () {
             type: "POST",
             // 这里向后端传递查询参数
             data: function (d) {
-                d.id = "";
+                d.id = $("#id").val().trim();
                 d.title = $("#title").val().trim();
                 d.content = $("#content").val().trim();
                 d.user = $("#user").val().trim();
@@ -21,9 +22,9 @@ $(document).ready(function () {
             }
         },
         // 与<table>标签中的<th>标签内的字段对应
-        columns: [{
-            data: "id"
-        }, {
+        columns: [
+            {data: "id","visible": false
+        } ,{
             data: "title"
         }, {
             data: "content"
@@ -89,43 +90,72 @@ $(document).ready(function () {
 
     $("#cancelAdd").on('click', function() {
         console.log('cancelAdd');
-        $("#addBookModal").find('input').val('')
+        $("#addBookModal").find('.form-control').val('')
     })
 
     $("#addBooksInfo").on('click', function() {
-        console.log('addBooksInfo');
-        if (true) {
-            if ($("#addBookModal").find('input').val() !== '') {
-                var title = $("#title").val()
-                var content = $("#content").val()
-                var user = $("#user").val()
-                var studyType = $("#studyType").val()
-                var addBookInfos = [].concat(title, content, user, studyType);
-                for (var i = 0; i < addBookInfos.length; i++) {
-                    if (addBookInfos[i] === '') {
-                        alert(titles[i] + '内容不能为空')
+        if ($("#addBookModal").find('.form-control').val() !== '') {
+            var title = $("#title").val()
+            var content = $("#content").val()
+            var user = $("#user").val()
+            var studyType = $("#studyType").val()
+            var addBookInfos = [].concat(title, content, user, studyType);
+            for (var i = 0; i < addBookInfos.length; i++) {
+                if (addBookInfos[i] === '') {
+                    alert(titles[i] + '内容不能为空');
+                    return;
+                }
+            }
+            var obj = {
+                "cols":"title,content,user,study_type",
+                "values":"('"+title+"','"+content+"','"+user+"','"+studyType+"')"
+            }
+            $.ajax({
+                "dataType" : 'json',
+                "contentType": "application/json; charset=utf-8",
+                "type" : "post",
+                "url" : "/addSearchGrid",
+                "data" :JSON.stringify(obj),
+                "success" : function(res){
+                    if (res.state == "1"){
+                        alert("添加成功");
+                        $('#books').DataTable().ajax.reload();
+                    }else{
+                        alert("添加失败");
                     }
                 }
-                table.row.add(['', title, content, user, studyType]).draw();
-                $("#addBookModal").find('input').val('')
-            }
-        } else {
-            alert('请输入内容')
+            })
+            // table.row.add([title, content, user, studyType]).draw();
+
+        }else {
+        alert('请输入内容')
         }
     })
-    $("#addBooksInfo").click();
+    //$("#addBooksInfo").click();
 
     $("#btn_add").click(function(){
         console.log('add');
         $("#addBook").modal()
     });
-
+    $('table tbody').on('click','tr', function() {
+        $("#editBookInfo").modal()
+        var rowData = table.rows('.selected').data()[0];
+        var editId = $("#editBookModal").find('#editId');
+        var inputs = $("#editBookModal").find('.form-control');
+        editId.val(rowData.id);
+        $(inputs[0]).val(rowData.title);
+        $(inputs[1]).val(rowData.content);
+        $(inputs[2]).val(rowData.user);
+        $(inputs[3]).val(rowData.studyType);
+    });
     $('#btn_edit').click(function () {
         console.log('edit');
         if (table.rows('.selected').data().length) {
             $("#editBookInfo").modal()
             var rowData = table.rows('.selected').data()[0];
-            var inputs = $("#editBookModal").find('.form-control')
+            var editId = $("#editBookModal").find('#editId');
+            var inputs = $("#editBookModal").find('.form-control');
+            editId.val(rowData.id);
             $(inputs[0]).val(rowData.title);
             $(inputs[1]).val(rowData.content);
             $(inputs[2]).val(rowData.user);
@@ -137,19 +167,44 @@ $(document).ready(function () {
     });
 
     $("#saveEdit").click(function() {
+        var editId = $("#editId").val()
         var editTitle = $("#editTitle").val()
         var editContent = $("#editContent").val()
         var editUser = $("#editUser").val()
         var editStudyType = $("#editStudyType").val()
         var newRowData = [].concat(editTitle, editContent, editUser, editStudyType);
-        var tds = Array.prototype.slice.call($('.selected td'))
+        //var tds = Array.prototype.slice.call($('.selected td'))
         for (var i = 0; i < newRowData.length; i++) {
             if (newRowData[i] !== '') {
-                tds[i + 1].innerHTML = newRowData[i];
+                //tds[i + 1].innerHTML = newRowData[i];
             } else {
-                alert(titles[i] + '内容不能为空')
+                alert(titles[i] + '内容不能为空');
+                return;
             }
         }
+        var obj = {
+            "title":editTitle,
+            "content":editContent,
+            "user":editUser,
+            "study_type":editStudyType,
+            "id":editId
+        }
+        $.ajax({
+            "dataType" : 'json',
+            "contentType": "application/json; charset=utf-8",
+            "type" : "post",
+            "url" : "/saveSearchGrid",
+            "data" :JSON.stringify(obj),
+            "success" : function(res){
+                if (res.state == "1"){
+                    alert("修改成功");
+                    $('#books').DataTable().ajax.reload();
+                }else{
+                    alert("修改失败");
+                }
+            }
+        })
+
     })
 
     $("#cancelEdit").click(function() {
@@ -166,6 +221,24 @@ $(document).ready(function () {
     });
 
     $('#delete').click(function () {
-        table.row('.selected').remove().draw(false);
+        var data = table.row('.selected').data();
+        var obj = {
+            "id":data.id,
+        }
+        $.ajax({
+            "dataType" : 'json',
+            "contentType": "application/json; charset=utf-8",
+            "type" : "post",
+            "url" : "/deleteSearchGrid",
+            "data" :JSON.stringify(obj),
+            "success" : function(res){
+                if (res.state == "1"){
+                    alert("删除成功");
+                    $('#books').DataTable().ajax.reload();
+                }else{
+                    alert("删除失败");
+                }
+            }
+        })
     });
 });

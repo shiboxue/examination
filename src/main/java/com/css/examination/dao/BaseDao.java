@@ -50,5 +50,19 @@ public interface BaseDao {
      */
     int executeInsertSql(@Param("cols") String cols, @Param("tableName") String tableName, @Param("values") String values);
 
+    /**
+     * 执行sql脚本删除操作
+     * @param tableName 表名
+     * @param id 主键
+     */
+    int deleteByExample(@Param("tableName") String tableName,@Param("id") String id);
+
+    /**
+     * 执行sql脚本更新操作
+     * @param tableName 表名
+     * @param set set
+     * @param id 主键
+     */
+    int updateByExample(@Param("tableName") String tableName,@Param("set") String set,@Param("id") String id);
 
 }

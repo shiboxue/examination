@@ -23,5 +23,12 @@
     <select id="executeQueryScript"  parameterType="String" resultType="java.util.LinkedHashMap">
       	${_parameter}
     </select>
+    <delete id="deleteByExample">
+    	delete from  ${tableName} where id = ${id}
+  	</delete>
+    <update id="updateByExample"  >
+     update  ${tableName} SET ${set}
+     where id=${id}
+</update>
 
 </mapper>

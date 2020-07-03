@@ -39,11 +39,20 @@ public interface ISearchService {
     int executeInsertSql(String cols,String tableName,String values);
 
     /**
+     * @name 执行sql脚本删除操作
+     * @param tableName 表名称
+     * @param id 主键
+     * @auth shiboxue
+     * @return 删除条数
+     */
+    int executeDeleteSql(String id,String tableName);
+
+    /**
      * @name 执行sql脚本更新操作，多个用;分隔
-     * @param setList 需要更新的值
+     * @param map 需要更新的值
      * @param tableName 表名
-     * @param where where条件
+     * @param id where条件
      * @auth shiboxue
      */
-    void executeSql(List<Map<String,String>> setList,String tableName,String where);
+    int executeUpdateSql(Map<String,Object> map,String tableName,String id);
 }

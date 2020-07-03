@@ -7,11 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,13 +21,6 @@ public class SearchController {
 
     @Autowired
     private ISearchService searchService;
-
-    @RequestMapping("/test")
-    public String test(@RequestParam("msg") String msg){
-        log.info(msg);
-        List<Map<String, Object>> list = searchService.executeQueryScript("select * from user");
-        return msg;
-    }
 
     /**
      * @name bootstrapTable 后端分页
@@ -48,7 +38,9 @@ public class SearchController {
         final Map<String,Object> map = new HashMap<>();
         String where = null;
         if (!StringUtils.isEmpty(search)){
-            where = "content =" + search;
+            where = "content like '%" + search+"%'";
+            where += " or ";
+            where += "title like '%" + search+"%'";
         }
         final List<Map<String, Object>> countList = searchService.executeQuerySql("count(1) count", "search", where, null);
         final List<Map<String, Object>> list = searchService.executeQuerySql("*","search",where,(pageNumber-1)*pageSize+","+pageSize);
@@ -73,7 +65,9 @@ public class SearchController {
         @RequestParam(value = "length",defaultValue = "10") Integer pageSize) {
         String where = null;
         if (!StringUtils.isEmpty(search)){
-            where = "content =" + search;
+            where = "content like '%" + search+"%'";
+            where += " or ";
+            where += "title like '%" + search+"%'";
         }
         final List<Map<String, Object>> countList = searchService.executeQuerySql("count(1) count", "search", where, null);
         final List<Map<String, Object>> list = searchService.executeQuerySql("*","search",where,pageNumber+","+pageNumber+pageSize);
@@ -84,9 +78,70 @@ public class SearchController {
         map.put("length",pageSize);//多少条
         map.put("recordsFiltered",total);
         map.put("recordsTotal",total);
-        map.put("pages",Integer.parseInt(total.toString())/list.size());//有多少页
+        map.put("pages",Integer.parseInt(total)/list.size());//有多少页
         map.put("data",list);//数据
         return JsonUtil.obj2Json(map);
     }
+
+    /**
+     * @name DataTable 新增
+     * @param params json
+     * @return json串
+     */
+    @ResponseBody
+    @RequestMapping(value = "/addSearchGrid")
+    public String addSearchGrid(@RequestBody Map<String, Object> params) {
+        log.info(params.toString());
+        final String cols = String.valueOf(params.get("cols"));
+        final String values = String.valueOf(params.get("values"));
+        final int search = searchService.executeInsertSql(cols, "search", values);
+        final Map<String,Object> returnMap = new HashMap<>();
+        if (search>0){
+            returnMap.put("state","1");
+        }else{
+            returnMap.put("state","0");
+        }
+        return JsonUtil.obj2Json(returnMap);
+    }
+
+    /**
+     * @name DataTable 删除
+     * @param params id主键
+     * @return json串
+     */
+    @ResponseBody
+    @RequestMapping(value = "/deleteSearchGrid")
+    public String deleteSearchGrid(@RequestBody Map<String, Object> params) {
+        log.info(params.toString());
+        final int search = searchService.executeDeleteSql(params.get("id").toString(), "search");
+        final Map<String,Object> returnMap = new HashMap<>();
+        if (search>0){
+            returnMap.put("state","1");
+        }else{
+            returnMap.put("state","0");
+        }
+        return JsonUtil.obj2Json(returnMap);
+    }
+
+    /**
+     * @name DataTable 新增
+     * @param params json
+     * @return json串
+     */
+    @ResponseBody
+    @RequestMapping(value = "/saveSearchGrid")
+    public String saveSearchGrid(@RequestBody Map<String, Object> params) {
+        final String id = params.get("id").toString();
+        params.remove("id");
+        final int search = searchService.executeUpdateSql(params, "search", id);
+        final Map<String,Object> returnMap = new HashMap<>();
+        if (search>0){
+            returnMap.put("state","1");
+        }else{
+            returnMap.put("state","0");
+        }
+        return JsonUtil.obj2Json(returnMap);
+    }
+
 
 }
