@@ -14,34 +14,44 @@ function search() {
 /***
  * 搜索结果列表
  */
-var TOTAL = 0;//总数
 $('#tableList').bootstrapTable({
     method: 'get',
     url: "/searchGrid", //请求路径
-    cache: false,
-    striped: true, //是否显示行间隔色
-    pageNumber: 1, //初始化加载第一页
-    pagination: true, //是否分
-    sidePagination: 'server', //server:服务器端分页|client：前端分页
-    pageSize: 10, //单页记录数
-    pageList: [5, 10, 20, 30], //可选择单页记录数
-    showRefresh: false, //刷新按钮
-    queryParams: function (params) { //上传服务器的参数
-        return { //如果是在服务器端实现分页，limit、offset这两个参数是必须的
-            search: $('#searchContent').val(),
-            size: params.limit, // 每页显示数量
-            page: (params.offset / params.limit) + 1, // 当前页码
-            total: TOTAL,//回去总数保留起来，用于之后显示条数总数，由于后台只有在第
-        }
+    contentType: "application/x-www-form-urlencoded",
+    dataType: "json",
+    pagination: true, //是否显示分页（*）
+    striped: true,//隔行换色
+    sidePagination: 'server',//分页方式
+    pageNumber: 1,//初始化table时显示的页码
+    pageSize: 10,//每页条目
+    pageList: [10, 20, 50, 100],
+    //queryParams: queryParams,
+    locale: 'zh-CN',
+    sortable: true,//排序
+    showColumns: true,//是否显示 内容列下拉框
+    clickToSelect: true,//点击选中checkbox
+    singleSelect: true,//启用单行选中
+    showExport: true,                     //是否显示导出
+    exportDataType: "all",              //basic', 'all', 'selected'.
+    queryParamsType: "", //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+    // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+    queryParams: function queryParams(params) {   //设置查询参数
+        var param = {
+            pageNumber: params.pageNumber,
+            pageSize: params.pageSize,
+            search:$('#searchContent').val()
+        };
+        return param;
+
     },
-    responseHandler: function (res) {
-        TOTAL = data.total;
-        var rows = data.rows;
-        return {
-            "total": TOTAL,
-            "rows": rows
-        }
-    },
+    // responseHandler: function (res) {
+    //     TOTAL = data.total;
+    //     var rows = data.rows;
+    //     return {
+    //         "total": TOTAL,
+    //         "rows": rows
+    //     }
+    // },
     columns: [
         {
             title: '标题',
