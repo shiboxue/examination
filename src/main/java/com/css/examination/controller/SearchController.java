@@ -61,23 +61,30 @@ public class SearchController {
      * @name DataTable 后端分页
      * @param draw  datatable传入参数，不作处理，返回即可
      * @param search 关键字条件
-     * @param page 当前页，默认是0
-     * @param size 显示条数，默认是10
+     * @param pageNumber 当前页，默认是0
+     * @param pageSize 显示条数，默认是10
      * @return json串
      */
     @ResponseBody
     @RequestMapping(value = "/listloginfo")
     public String logInfoPaging(Integer draw,
         @RequestParam(value = "search[value]",required = false) String search,
-        @RequestParam(value = "start",defaultValue = "0") Integer page,
-        @RequestParam(value = "length",defaultValue = "10") Integer size) {
-        final List<Map<String, Object>> list = searchService.executeQueryScript("select * from search");
+        @RequestParam(value = "start",defaultValue = "0") Integer pageNumber,
+        @RequestParam(value = "length",defaultValue = "10") Integer pageSize) {
+        String where = null;
+        if (!StringUtils.isEmpty(search)){
+            where = "content =" + search;
+        }
+        final List<Map<String, Object>> countList = searchService.executeQuerySql("count(1) count", "search", where, null);
+        final List<Map<String, Object>> list = searchService.executeQuerySql("*","search",where,pageNumber+","+pageNumber+pageSize);
+        final String total = countList.get(0).get("count").toString();
         final Map<String,Object> map = new HashMap<>();
         map.put("draw",draw);
-        map.put("page",page);//起
-        map.put("length",size);//多少条
-        map.put("recordsTotal","1000");
-        map.put("pages","3");//有多少页
+        map.put("page",pageNumber);//起
+        map.put("length",pageSize);//多少条
+        map.put("recordsFiltered",total);
+        map.put("recordsTotal",total);
+        map.put("pages",Integer.parseInt(total.toString())/list.size());//有多少页
         map.put("data",list);//数据
         return JsonUtil.obj2Json(map);
     }
