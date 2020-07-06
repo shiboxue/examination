@@ -135,9 +135,11 @@ public class SearchController {
         params.remove("id");
         final int search = searchService.executeUpdateSql(params, "search", id);
         final Map<String,Object> returnMap = new HashMap<>();
-        if (search>0){
+        if (search==1){
             returnMap.put("state","1");
-        }else{
+        }else if (search==2){
+            returnMap.put("state","2");
+        }else {
             returnMap.put("state","0");
         }
         return JsonUtil.obj2Json(returnMap);

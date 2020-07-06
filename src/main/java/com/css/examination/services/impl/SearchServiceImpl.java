@@ -44,6 +44,13 @@ public class SearchServiceImpl implements ISearchService {
             sql.append("'");
         }
         final String set = sql.substring(1);
-        return baseDao.updateByExample(tableName,set,id);
+        int count = 0;
+        try {
+             count = baseDao.updateByExample(tableName, set, id);
+        } catch (Exception e) {
+            count = 2;
+            e.printStackTrace();
+        }
+        return count;
     }
 }
