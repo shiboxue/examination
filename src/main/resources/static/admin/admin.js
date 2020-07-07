@@ -107,8 +107,10 @@ $(document).ready(function () {
                 }
             }
             var obj = {
-                "cols":"title,content,user,study_type",
-                "values":"('"+title+"','"+content+"','"+user+"','"+studyType+"')"
+                "title":title,
+                "content":content,
+                "user":user,
+                "study_type":studyType
             }
             $.ajax({
                 "dataType" : 'json',
@@ -199,7 +201,9 @@ $(document).ready(function () {
                 if (res.state == "1"){
                     alert("修改成功");
                     $('#books').DataTable().ajax.reload();
-                }else{
+                }else if (res.state == "2") {
+                    alert("内容出现特殊字符,修改失败");
+                }else {
                     alert("修改失败");
                 }
             }
