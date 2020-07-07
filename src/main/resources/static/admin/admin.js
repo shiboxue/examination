@@ -139,7 +139,7 @@ $(document).ready(function () {
         console.log('add');
         $("#addBook").modal()
     });
-    $('table tbody').on('click','tr', function() {
+    $('table tbody').on('dblclick','tr', function() {
         $("#editBookInfo").modal()
         var rowData = table.rows('.selected').data()[0];
         var editId = $("#editBookModal").find('#editId');
