@@ -38,9 +38,7 @@ public class SearchController {
         final Map<String,Object> map = new HashMap<>();
         String where = null;
         if (!StringUtils.isEmpty(search)){
-            where = "content like '%" + search+"%'";
-            where += " or ";
-            where += "title like '%" + search+"%'";
+            where = queryCondition(search);
         }
         final List<Map<String, Object>> countList = searchService.executeQuerySql("count(1) count", "search", where, null);
         final List<Map<String, Object>> list = searchService.executeQuerySql("*","search",where,(pageNumber-1)*pageSize+","+pageSize);
@@ -65,9 +63,7 @@ public class SearchController {
         @RequestParam(value = "length",defaultValue = "10") Integer pageSize) {
         String where = null;
         if (!StringUtils.isEmpty(search)){
-            where = "content like '%" + search+"%'";
-            where += " or ";
-            where += "title like '%" + search+"%'";
+            where = queryCondition(search);
         }
         final List<Map<String, Object>> countList = searchService.executeQuerySql("count(1) count", "search", where, null);
         final List<Map<String, Object>> list = searchService.executeQuerySql("*","search",where,pageNumber+","+pageNumber+pageSize);
@@ -78,7 +74,7 @@ public class SearchController {
         map.put("length",pageSize);//多少条
         map.put("recordsFiltered",total);
         map.put("recordsTotal",total);
-        map.put("pages",Integer.parseInt(total)/list.size());//有多少页
+        map.put("pages",list.size()==0?0:Integer.parseInt(total)/list.size());//有多少页
         map.put("data",list);//数据
         return JsonUtil.obj2Json(map);
     }
@@ -149,7 +145,7 @@ public class SearchController {
         final String id = params.get("id").toString();
         params.remove("id");
         params.put("content",String.valueOf(params.get("content")).replaceAll("'", "\\\\\'"));
-        params.put("titile",String.valueOf(params.get("content")).replaceAll("'", "\\\\\'"));
+        params.put("title",String.valueOf(params.get("title")).replaceAll("'", "\\\\\'"));
         final int search = searchService.executeUpdateSql(params, "search", id);
         final Map<String,Object> returnMap = new HashMap<>();
         if (search==1){
@@ -160,6 +156,18 @@ public class SearchController {
             returnMap.put("state","0");
         }
         return JsonUtil.obj2Json(returnMap);
+    }
+
+    private String queryCondition(String search){
+        String where = "";
+        where = "content like '%" + search+"%'";
+        where += " or ";
+        where += "title like '%" + search+"%'";
+        where += " or ";
+        where += "user like '%" + search+"%'";
+        where += " or ";
+        where += "study_type like '%" + search+"%'";
+        return where;
     }
 
 
