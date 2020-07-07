@@ -117,4 +117,14 @@ public class ExamDataAPI {
     public String toHome(@RequestParam String title, @RequestParam String smart) {
         return "/search/search.html";
     }
+    /**
+     * @name 查询页面
+     * @author liwei
+     * @date 2020-04-30
+     */
+    @RequestMapping(value = "/createIndex", method = RequestMethod.GET)
+    public String createIndex(@RequestParam String index) {
+        elasticUtils.createIndex(index);
+        return "11";
+    }
 }

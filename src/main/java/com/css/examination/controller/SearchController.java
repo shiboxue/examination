@@ -1,6 +1,7 @@
 package com.css.examination.controller;
 
 import com.css.examination.services.ISearchService;
+import com.css.examination.utils.DateUtils;
 import com.css.examination.utils.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 @Controller
 public class SearchController {
@@ -92,8 +92,23 @@ public class SearchController {
     @RequestMapping(value = "/addSearchGrid")
     public String addSearchGrid(@RequestBody Map<String, Object> params) {
         log.info(params.toString());
-        final String cols = String.valueOf(params.get("cols"));
-        final String values = String.valueOf(params.get("values"));
+        final String cols = "title,content,user,study_type,create_time";
+        final StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("(");
+        for(String key:params.keySet()){
+            final String value = params.get(key).toString();//
+            stringBuffer.append("'");
+            stringBuffer.append(value.replaceAll("'", "\\\\\'"));
+            stringBuffer.append("'");
+            stringBuffer.append(",");
+        }
+//        int i = stringBuffer.lastIndexOf(",");
+//        stringBuffer.deleteCharAt(i);
+        stringBuffer.append("'");
+        stringBuffer.append(DateUtils.getNow());
+        stringBuffer.append("'");
+        stringBuffer.append(")");
+        final String values = stringBuffer.toString();
         final int search = searchService.executeInsertSql(cols, "search", values);
         final Map<String,Object> returnMap = new HashMap<>();
         if (search>0){
@@ -133,6 +148,8 @@ public class SearchController {
     public String saveSearchGrid(@RequestBody Map<String, Object> params) {
         final String id = params.get("id").toString();
         params.remove("id");
+        params.put("content",String.valueOf(params.get("content")).replaceAll("'", "\\\\\'"));
+        params.put("titile",String.valueOf(params.get("content")).replaceAll("'", "\\\\\'"));
         final int search = searchService.executeUpdateSql(params, "search", id);
         final Map<String,Object> returnMap = new HashMap<>();
         if (search==1){
