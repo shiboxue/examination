@@ -1,0 +1,15 @@
+.table_row_info {
+    background-color: #0074D9 !important;
+}
+.table_row_success {
+    background-color: green !important;
+}
+.table_row_warning {
+    background-color: yellow !important;
+}
+.table_row_danger {
+    background-color: red !important;
+}
+.table_row_active{
+    background-color: pink !important;
+}
