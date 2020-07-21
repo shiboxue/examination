@@ -56,7 +56,7 @@ public class ExamDataAPI {
     }
 
     /**
-     * @param title 标题
+     * @param id 标题
      * @return 成功删除条数
      * @name 根据表名获取表字段信息
      * @author liwei
@@ -120,32 +120,48 @@ public class ExamDataAPI {
      * @author liwei
      * @date 2020-04-30
      */
+    @PutMapping(value = "/create")
+    public String createtest() {
+        elasticUtils.createIndex("sbx");
+        return "/test.html";
+    }
+
+    /**
+     * @name 查询页面
+     * @author liwei
+     * @date 2020-04-30
+     */
     @RequestMapping(value = "/createIndex", method = RequestMethod.GET)
-    public String createIndex() {
+    public String create() {
         String mappings= "{" +
-                "    \"mappings\":{" +
-                "        \"user\": {     " +
-                "            \"_all\": { \"enabled\": false }, " +
-                "            \"properties\": {" +
-                "                \"id\": { \"type\": \"integer\" }," +
-                "                \"title\": {" +
-                "                  \"type\": \"text\"" +
-                "                }," +
-                "                \"content\": {" +
-                "                    \"type\": \"text\"                    " +
-                "                } , \"user\": {" +
-                "                  \"type\": \"text\"" +
-                "                },  \"study_type\": {" +
-                "                  \"type\": \"text\"" +
-                "                }, \"create_time\": {" +
-                "                  \"type\": \"date\", " +
-                "                    \"format\": \"strict_date_optional_time||epoch_millis\"" +
-                "                }" +
+                "    \"user\":{" +
+                "        \"_all\":{" +
+                "            \"enabled\":false" +
+                "        }," +
+                "        \"properties\":{" +
+                "            \"id\":{" +
+                "                \"type\":\"integer\"" +
+                "            }," +
+                "            \"title\":{" +
+                "                \"type\":\"text\"" +
+                "            }," +
+                "            \"content\":{" +
+                "                \"type\":\"text\"" +
+                "            }," +
+                "            \"user\":{" +
+                "                \"type\":\"text\"" +
+                "            }," +
+                "            \"study_type\":{" +
+                "                \"type\":\"text\"" +
+                "            }," +
+                "            \"create_time\":{" +
+                "                \"type\":\"date\"," +
+                "                \"format\":\"strict_date_optional_time||epoch_millis\"" +
                 "            }" +
                 "        }" +
                 "    }" +
                 "}";
-        elasticUtils.createIndexMapping("search","search",mappings);
-        return "11";
+        elasticUtils.createIndexMapping("sbx","user",mappings);
+        return "/test.html";
     }
 }

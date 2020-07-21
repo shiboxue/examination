@@ -5,7 +5,8 @@ server:
 es:
   server:
     ip: 10.99.1.150
-    port: 9300
+    port: 9200
+
 
 ### mybatis
 mybatis:

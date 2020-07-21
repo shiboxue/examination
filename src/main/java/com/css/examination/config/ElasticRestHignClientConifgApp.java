@@ -28,15 +28,14 @@ public class ElasticRestHignClientConifgApp {
                 .Builder(serverUrl)
                 .gson(new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create())
                 .multiThreaded(true)
-                .readTimeout(10000)
+                .readTimeout(50000)
                 .build());
         return factory.getObject();
     }
     @Bean(name="LocalRestHighLevelClient")
     public RestHighLevelClient restHighLevelClient() {
         final RestHighLevelClient client = new RestHighLevelClient(
-                RestClient.builder(
-                        new HttpHost(esServerIp, Integer.parseInt(esServerPort), "http")));
+                RestClient.builder(new HttpHost(esServerIp, Integer.parseInt(esServerPort), "http")));
         return client;
     }
 }

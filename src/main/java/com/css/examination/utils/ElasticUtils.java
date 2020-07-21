@@ -3,6 +3,8 @@ package com.css.examination.utils;
 
 import com.css.examination.vo.ElasticQueryVO;
 import io.searchbox.client.JestClient;
+import io.searchbox.client.JestClientFactory;
+import io.searchbox.client.config.HttpClientConfig;
 import io.searchbox.indices.IndicesExists;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -142,20 +144,6 @@ public class ElasticUtils {
         }
         return queryResult;
     }
-
-
-
-
-
-//    // JestClientFactory 方便本地开发测试
-////    private static final JestClient jestClient;
-////    static {
-////        JestClientFactory factory = new JestClientFactory();
-////        factory.setHttpClientConfig(new HttpClientConfig.Builder("http://127.0.0.1:9200")
-////                .multiThreaded(true)
-////                .build());
-////        jestClient = factory.getObject();
-////    }
 
     /**
      * 创建索引
