@@ -2,6 +2,7 @@ package com.css.examination.controller;
 
 import com.css.examination.services.ISearchService;
 import com.css.examination.utils.DateUtils;
+import com.css.examination.utils.ElasticUtils;
 import com.css.examination.utils.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +25,9 @@ public class SearchController {
 
     @Autowired
     private ISearchService searchService;
+
+    @Resource
+    ElasticUtils elasticUtils;
 
     /**
      * @name bootstrapTable 后端分页
@@ -168,6 +175,48 @@ public class SearchController {
         where += " or ";
         where += "study_type like '%" + search+"%'";
         return where;
+    }
+
+    /**
+     * @name 插入
+     * @author shiboxue
+     * @date 2020-07-21
+     */
+    @GetMapping(value = "/insertEs")
+    public String insertTest() {
+        final String where = "";
+        try {
+            final List<Map<String, Object>> list = searchService.executeQuerySql("*","search",where,"");
+
+            elasticUtils.bulkIndex("sbx","user",list);
+        } catch (IOException e) {
+            log.error("i/o异常");
+        }
+        return "/test.html";
+    }
+
+    /**
+     * @name 删除根据_id
+     * @author shiboxue
+     * @desc id是唯一标识，是_id
+     * @date 2020-07-21
+     */
+    @GetMapping(value = "/deleteEsById")
+    public String deleteEsById(@RequestParam String id) {
+        elasticUtils.deleteIndexDoc("sbx","user",id);
+        return "/test.html";
+    }
+
+    /**
+     * @name 删除根据_id
+     * @author shiboxue
+     * @desc id是唯一标识，是_id
+     * @date 2020-07-21
+     */
+    @GetMapping(value = "/deleteEsBySearch")
+    public String deleteEsBySearch(@RequestParam String search) {
+        elasticUtils.deleteIndexDocBySearch("sbx","user",search);
+        return "/test.html";
     }
 
 
