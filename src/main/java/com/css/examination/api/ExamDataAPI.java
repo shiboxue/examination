@@ -10,13 +10,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -123,8 +121,31 @@ public class ExamDataAPI {
      * @date 2020-04-30
      */
     @RequestMapping(value = "/createIndex", method = RequestMethod.GET)
-    public String createIndex(@RequestParam String index) {
-        elasticUtils.createIndex(index);
+    public String createIndex() {
+        String mappings= "{" +
+                "    \"mappings\":{" +
+                "        \"user\": {     " +
+                "            \"_all\": { \"enabled\": false }, " +
+                "            \"properties\": {" +
+                "                \"id\": { \"type\": \"integer\" }," +
+                "                \"title\": {" +
+                "                  \"type\": \"text\"" +
+                "                }," +
+                "                \"content\": {" +
+                "                    \"type\": \"text\"                    " +
+                "                } , \"user\": {" +
+                "                  \"type\": \"text\"" +
+                "                },  \"study_type\": {" +
+                "                  \"type\": \"text\"" +
+                "                }, \"create_time\": {" +
+                "                  \"type\": \"date\", " +
+                "                    \"format\": \"strict_date_optional_time||epoch_millis\"" +
+                "                }" +
+                "            }" +
+                "        }" +
+                "    }" +
+                "}";
+        elasticUtils.createIndexMapping("search","search",mappings);
         return "11";
     }
 }

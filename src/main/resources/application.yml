@@ -4,8 +4,8 @@ server:
 ###Es 服务器配置
 es:
   server:
-    ip: 10.23.10.150
-    port: 9200
+    ip: 10.99.1.150
+    port: 9300
 
 ### mybatis
 mybatis:
@@ -22,10 +22,10 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: root
-  thymeleaf:
-    prefix:
-      classpath: /templates   # 访问template下的html文件需要配置模板，映射
-    cache: false # 开发时关闭缓存,不然没法看到实时页面
+#  thymeleaf:
+#    prefix:
+#      classpath: /templates   # 访问template下的html文件需要配置模板，映射
+#    cache: false # 开发时关闭缓存,不然没法看到实时页面
 
 
 
