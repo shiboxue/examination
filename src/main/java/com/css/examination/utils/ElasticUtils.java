@@ -2,6 +2,7 @@ package com.css.examination.utils;
 
 
 import com.css.examination.vo.ElasticQueryVO;
+import io.searchbox.action.BulkableAction;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
 import io.searchbox.client.config.HttpClientConfig;
@@ -43,10 +44,7 @@ import org.elasticsearch.search.sort.SortOrder;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import java.util.concurrent.TimeUnit;
 
@@ -701,6 +699,25 @@ public class ElasticUtils {
             }
         }
         return new Page(pageNo, totalCount, pageSize, list);
+    }
+
+    /**
+     * Bulk插入数据
+     * @throws IOException
+     */
+    public void bulkIndex(String indexName,String indexType,List<?> list) throws IOException{
+        final List<Index> indices = new ArrayList<>();
+        for (int i = 0; i <list.size() ; i++) {
+            final Index build = new Index.Builder(list.get(i)).build();
+            indices.add(build);
+        }
+        Bulk bulk = new Bulk.Builder()
+                .defaultIndex(indexName)
+                .defaultType(indexType)
+                .addAction(indices).build();
+        JestResult jestResult=jestClient.execute(bulk);
+        System.out.println(jestResult.getJsonString());
+
     }
 
     /**

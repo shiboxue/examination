@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,14 +116,39 @@ public class ExamDataAPI {
     public String toHome(@RequestParam String title, @RequestParam String smart) {
         return "/search/search.html";
     }
+
     /**
-     * @name 查询页面
-     * @author liwei
-     * @date 2020-04-30
+     * @name 创建index
+     * @author shiboxue
+     * @date 2020-07-21
      */
     @PutMapping(value = "/create")
-    public String createtest() {
+    public String createTest() {
         elasticUtils.createIndex("sbx");
+        return "/test.html";
+    }
+
+    /**
+     * @name 插入
+     * @author shiboxue
+     * @date 2020-07-21
+     */
+    @GetMapping(value = "/insert")
+    public String insertTest() {
+        final List<Map<String,String>> mapList = new ArrayList<>();
+        try {
+            final Map<String,String> map = new HashMap<>();
+            map.put("id","12");
+            map.put("title","测试");
+            map.put("content","123");
+            map.put("user","史博学");
+            map.put("study_type","java");
+            map.put("create_time","2015-01-01T12:10:30Z");
+            mapList.add(map);
+            elasticUtils.bulkIndex("sbx","user",mapList);
+        } catch (IOException e) {
+            logger.error("i/o异常");
+        }
         return "/test.html";
     }
 
