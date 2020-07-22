@@ -618,7 +618,11 @@ public class ElasticUtils {
                 }
             }
         }
-        return new Page(pageNo, totalCount, pageSize, list);
+        Page page = new Page();
+        page.setTotal(totalCount);
+        page.setRows(list);
+        //Page page = new Page(pageNo, totalCount, pageSize, list);
+        return page;
     }
 
     /**
@@ -758,12 +762,33 @@ public class ElasticUtils {
         public long totalCount;
         public Integer pageSize;
         public List list;
+        public List rows;
+        public long total;
+        public Page(){
+
+        }
         public Page(Integer pageNo, long totalCount, Integer pageSize, List list) {
 
         }
 
         public static int getStartOfPage(Integer pageNo, Integer pageSize) {
             return 0;
+        }
+
+        public List getRows() {
+            return rows;
+        }
+
+        public void setRows(List rows) {
+            this.rows = rows;
+        }
+
+        public long getTotal() {
+            return total;
+        }
+
+        public void setTotal(long total) {
+            this.total = total;
         }
 
         public Integer getPageNo() {

@@ -16,7 +16,7 @@ function search() {
  */
 $('#tableList').bootstrapTable({
     method: 'get',
-    url: "/searchGrid", //请求路径
+    url: "/searchGridByEs", //请求路径//searchGridByEs
     contentType: "application/x-www-form-urlencoded",
     dataType: "json",
     pagination: true, //是否显示分页（*）

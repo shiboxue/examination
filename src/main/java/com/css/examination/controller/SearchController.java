@@ -4,6 +4,7 @@ import com.css.examination.services.ISearchService;
 import com.css.examination.utils.DateUtils;
 import com.css.examination.utils.ElasticUtils;
 import com.css.examination.utils.JsonUtil;
+import com.css.examination.vo.ElasticQueryVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -188,7 +189,7 @@ public class SearchController {
         try {
             final List<Map<String, Object>> list = searchService.executeQuerySql("*","search",where,"");
 
-            elasticUtils.bulkIndex("sbx","user",list);
+            elasticUtils.bulkIndex("search","user",list);
         } catch (IOException e) {
             log.error("i/o异常");
         }
@@ -215,8 +216,26 @@ public class SearchController {
      */
     @GetMapping(value = "/deleteEsBySearch")
     public String deleteEsBySearch(@RequestParam String search) {
-        elasticUtils.deleteIndexDocBySearch("sbx","user",search);
+        search = "\"id\":1 ";
+        elasticUtils.deleteIndexDocBySearch("search","user",search);
         return "/test.html";
+    }
+
+    /**
+     * @name bootstrapTable 后端分页
+     * @param search 关键字条件
+     * @param pageNumber 当前页，默认是1
+     * @param pageSize 显示条数，默认是10
+     * @return json串
+     */
+    @RequestMapping("/searchGridByEs")
+    @ResponseBody
+    public String searchGridByEs(
+            @RequestParam("search") String search,
+            @RequestParam("pageNumber") Integer pageNumber,
+            @RequestParam("pageSize") Integer pageSize ){
+        String json = JsonUtil.obj2Json(elasticUtils.baseSearch("search", "user", search, pageNumber, pageSize));
+        return  json;
     }
 
 
