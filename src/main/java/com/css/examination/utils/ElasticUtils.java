@@ -702,7 +702,11 @@ public class ElasticUtils {
                 }
             }
         }
-        return new Page(pageNo, totalCount, pageSize, list);
+        Page page = new Page();
+        page.setTotal(totalCount);
+        page.setRows(list);
+        //Page page = new Page(pageNo, totalCount, pageSize, list);
+        return page;
     }
 
     /**
@@ -772,7 +776,7 @@ public class ElasticUtils {
         }
 
         public static int getStartOfPage(Integer pageNo, Integer pageSize) {
-            return 0;
+            return (pageNo-1)*pageSize;
         }
 
         public List getRows() {

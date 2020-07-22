@@ -234,7 +234,7 @@ public class SearchController {
             @RequestParam("search") String search,
             @RequestParam("pageNumber") Integer pageNumber,
             @RequestParam("pageSize") Integer pageSize ){
-        String json = JsonUtil.obj2Json(elasticUtils.baseSearch("search", "user", search, pageNumber, pageSize));
+        String json = JsonUtil.obj2Json(elasticUtils.baseSearch("search", "user", search, pageNumber, pageSize,"id","ASC"));
         return  json;
     }
 
