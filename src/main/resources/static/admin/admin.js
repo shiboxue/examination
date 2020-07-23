@@ -31,7 +31,7 @@ $(document).ready(function () {
         }, {
             data: "user"
         }, {
-            data: "studyType"
+            data: "study_type"
         }],
         "pagingType": "full_numbers",
                 "processing": true,

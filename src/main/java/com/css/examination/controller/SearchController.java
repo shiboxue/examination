@@ -114,6 +114,13 @@ public class SearchController {
         stringBuffer.append(")");
         final String values = stringBuffer.toString();
         final int search = searchService.executeInsertSql(cols, "search", values);
+        final List<Map<String,Object>> list = new ArrayList<>();
+        list.add(params);
+        try {
+            elasticUtils.bulkIndex("search","user",list);
+        } catch (IOException e) {
+            log.error("i/o异常");
+        }
         final Map<String,Object> returnMap = new HashMap<>();
         if (search>0){
             returnMap.put("state","1");
@@ -179,16 +186,15 @@ public class SearchController {
     }
 
     /**
-     * @name 插入
+     * @name 将数据库中的数据插入到ES中
      * @author shiboxue
      * @date 2020-07-21
      */
     @GetMapping(value = "/insertEs")
-    public String insertTest() {
+    public String insertEs() {
         final String where = "";
         try {
             final List<Map<String, Object>> list = searchService.executeQuerySql("*","search",where,"");
-
             elasticUtils.bulkIndex("search","user",list);
         } catch (IOException e) {
             log.error("i/o异常");
