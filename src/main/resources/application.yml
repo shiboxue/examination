@@ -15,7 +15,7 @@ mybatis:
     #为null处理
     call-setters-on-nulls: true
     #设置是否驼峰
-    map-underscore-to-camel-case: true
+    map-underscore-to-camel-case: false
 
 spring:
   datasource:
