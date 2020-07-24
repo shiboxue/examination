@@ -140,6 +140,7 @@ public class SearchController {
     public String deleteSearchGrid(@RequestBody Map<String, Object> params) {
         log.info(params.toString());
         final int search = searchService.executeDeleteSql(params.get("id").toString(), "search");
+        elasticUtils.deleteIndexDoc("search","user",params.get("id").toString());
         final Map<String,Object> returnMap = new HashMap<>();
         if (search>0){
             returnMap.put("state","1");
@@ -150,7 +151,7 @@ public class SearchController {
     }
 
     /**
-     * @name DataTable 新增
+     * @name DataTable 修改
      * @param params json
      * @return json串
      */
@@ -162,6 +163,7 @@ public class SearchController {
         params.put("content",String.valueOf(params.get("content")).replaceAll("'", "\\\\\'"));
         params.put("title",String.valueOf(params.get("title")).replaceAll("'", "\\\\\'"));
         final int search = searchService.executeUpdateSql(params, "search", id);
+        elasticUtils.updateIndexDoc("search","user",id,params);
         final Map<String,Object> returnMap = new HashMap<>();
         if (search==1){
             returnMap.put("state","1");
