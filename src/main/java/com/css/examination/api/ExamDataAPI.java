@@ -135,9 +135,9 @@ public class ExamDataAPI {
      */
     @GetMapping(value = "/insert")
     public String insertTest() {
-        final List<Map<String,String>> mapList = new ArrayList<>();
+        final List<Map<String,Object>> mapList = new ArrayList<>();
         try {
-            final Map<String,String> map = new HashMap<>();
+            final Map<String,Object> map = new HashMap<>();
             map.put("id","12");
             map.put("title","测试");
             map.put("content","123");

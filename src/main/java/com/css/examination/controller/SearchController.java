@@ -170,6 +170,7 @@ public class SearchController {
         }else {
             returnMap.put("state","0");
         }
+        //elasticUtils.updateIndexDoc("search","user","");
         return JsonUtil.obj2Json(returnMap);
     }
 

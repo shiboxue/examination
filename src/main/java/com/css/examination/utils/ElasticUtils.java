@@ -713,10 +713,10 @@ public class ElasticUtils {
      * Bulk插入数据
      * @throws IOException
      */
-    public void bulkIndex(String indexName,String indexType,List<?> list) throws IOException{
+    public void bulkIndex(String indexName,String indexType,List<Map<String,Object>> list) throws IOException{
         final List<Index> indices = new ArrayList<>();
         for (int i = 0; i <list.size() ; i++) {
-            final Index build = new Index.Builder(list.get(i)).build();
+            final Index build = new Index.Builder(list.get(i)).id(list.get(i).get("id").toString()).build();
             indices.add(build);
         }
         Bulk bulk = new Bulk.Builder()
