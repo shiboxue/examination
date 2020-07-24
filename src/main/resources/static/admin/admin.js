@@ -141,14 +141,15 @@ $(document).ready(function () {
     });
     $('table tbody').on('dblclick','tr', function() {
         $("#editBookInfo").modal()
-        var rowData = table.rows('.selected').data()[0];
+        //var rowData = table.rows('.selected').data()[0];
+        var rowData =table.row(this).data();
         var editId = $("#editBookModal").find('#editId');
         var inputs = $("#editBookModal").find('.form-control');
         editId.val(rowData.id);
         $(inputs[0]).val(rowData.title);
         $(inputs[1]).val(rowData.content);
         $(inputs[2]).val(rowData.user);
-        $(inputs[3]).val(rowData.studyType);
+        $(inputs[3]).val(rowData.study_type);
     });
     $('#btn_edit').click(function () {
         console.log('edit');
@@ -161,7 +162,7 @@ $(document).ready(function () {
             $(inputs[0]).val(rowData.title);
             $(inputs[1]).val(rowData.content);
             $(inputs[2]).val(rowData.user);
-            $(inputs[3]).val(rowData.studyType);
+            $(inputs[3]).val(rowData.study_type);
 
         } else {
             alert('请选择项目');
